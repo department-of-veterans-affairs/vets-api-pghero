@@ -1,2 +1,2 @@
 # vets_pghero
-A repository for PgHero running on K8s
+A repository for vets-api PgHero running on K8s
