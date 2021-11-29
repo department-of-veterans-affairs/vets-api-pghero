@@ -20,11 +20,3 @@ Run this to view the confimap in a yaml format
 5. Run `kubectl get pods` to list the running pods
 6. Local port fowarding: `kubectl port-forward name-of-your-pod-here 8080:8080`
 7. Visit `localhost:8080` for the PgHero UI
-
-
-
-
-
-
-
-
