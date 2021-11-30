@@ -5,7 +5,7 @@ A repository for PgHero running on K8s
 ## Local setup
 Prerequisites:
 1. Kubernetes is running on your local machine 
-	- OSX: Check the Kubernetes box in Docker Desktop Preferences => Kubernetes => Enable Kubernetes
+	- MacOS: Check the Kubernetes box in Docker Desktop Preferences => Kubernetes => Enable Kubernetes
 2. Install the Kubernetes command-line tool, `kubectl`
     *   See the [installation doc](https://kubernetes.io/docs/tasks/tools/) for your operating system.
 3. Clone this repo locally
