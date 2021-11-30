@@ -11,12 +11,13 @@ Prerequisites:
 3. Clone this repo locally
 
 ## Running via K8s locally
+0. Comment out the pghero.yml file and uncomment the # Local development section
 1. cd into the vets-api-pghero directory locally
 2. run: `kubectl create configmap pghero --from-file=configmap/pghero.yml`
 This will create a local configmap from the pghero.yml file
 3. run: `kubectl get configmaps pghero -o yaml`
 Run this to view the confimap in a yaml format
-4. Launch the pod/create the deployment via: `kubectl apply -f pghero-pod.yml`
+4. Launch the pod/create the deployment via: `kubectl apply -f deployment.yml`
 5. Run `kubectl get pods` to list the running pods
 6. Local port fowarding: `kubectl port-forward name-of-your-pod-here 8080:8080`
 7. Visit `localhost:8080` for the PgHero UI
