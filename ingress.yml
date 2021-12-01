@@ -17,3 +17,5 @@ spec:
     services:
       - name: vets-api-pghero
         port: 8080
+    middlewares:
+      - name: vets-api-pghero-basic-auth

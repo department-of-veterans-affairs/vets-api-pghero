@@ -1,0 +1,11 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  namespace: platform-backend-tools
+  name: vets-api-pghero-basic-auth
+  labels:
+    app: vets-api-pghero
+spec:
+  basicAuth:
+    secret: pgherobasicauthsecrets
