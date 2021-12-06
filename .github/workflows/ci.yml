@@ -1,0 +1,105 @@
+name: Release and Update Manifests
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      environments:
+        description: "Provide a space delimited list of the cluster environments you would like to update wrapped in single quotes ex. 'dev' or 'dev staging sandbox'.  Avalable options -> dev, staging, sandbox, utility, prod sandbox"
+        required: true
+
+env:
+  autoDeployEnvs: 'dev staging prod sandbox'
+
+jobs:
+  prepare-values:
+    runs-on: ubuntu-20.04
+    outputs:
+      environments: ${{ steps.set-environments.outputs.environments }}
+    steps:
+      - name: Set to auto deploy environments when not run via workflow dispatch
+        if: github.event.inputs.environments == ''
+        run: |
+         echo "triggered via schedule"
+         echo "environments=${{ env.autoDeployEnvs }}" >> $GITHUB_ENV
+      - name: Set to environments specified in input when run via workflow dispatch
+        if: github.event.inputs.environments != ''
+        run: |
+          echo "triggered via workflow dispatch"
+          echo "environments=${{ github.event.inputs.environments }}" >> $GITHUB_ENV
+      - name: Set output
+        id: set-environments
+        run: |
+          echo "::set-output name=environments::${{ env.environments }}"
+  release:
+    needs: [prepare-values]
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: "us-gov-west-1"
+      - name: Log into ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Get bot token from Parameter Store
+        uses: marvinpinto/action-inject-ssm-secrets@latest
+        with:
+          ssm_parameter: /devops/VA_VSP_BOT_GITHUB_TOKEN
+          env_variable_name: VA_VSP_BOT_GITHUB_TOKEN
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v2
+        id: semantic
+        env:
+          GITHUB_TOKEN: ${{ env.VA_VSP_BOT_GITHUB_TOKEN }}
+      - name: Install yq if needed
+        if: steps.semantic.outputs.new_release_published == 'true' || github.event.inputs.environments != ''
+        run: |
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
+          sudo add-apt-repository ppa:rmescandon/yq
+          sudo apt update
+          sudo apt install yq -y
+      - name: Set component versions as environment variables
+        run: |
+          for COMPONENT in $(cat versions.json | jq -r '.components | .[] | .name + "=" + (.version)')
+          do
+            echo "$COMPONENT" >> $GITHUB_ENV
+          done
+      - name: Check out Manifest Repo
+        uses: actions/checkout@v2
+        with:
+          repository: department-of-veterans-affairs/vsp-infra-application-manifests
+          token: ${{ env.VA_VSP_BOT_GITHUB_TOKEN }}
+          fetch-depth: 1
+          path: vsp-infra-application-manifests
+      - name: Update image name in Manifest repo
+        if: steps.semantic.outputs.new_release_published == 'true' || github.event.inputs.environments != ''
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: dsva/pghero
+        run: |
+          cd vsp-infra-application-manifests/apps/vsp-tools-backend/vets-api-pghero
+          # Update pghero image
+          envs=( ${{ needs.prepare-values.outputs.environments }} )
+          for env in ${envs[*]};
+          do
+            yq e -i '.spec.template.spec.containers.[0].image = "008577686731.dkr.ecr.us-gov-west-1.amazonaws.com/dsva/pghero:pghero-${{ env.pghero }}"' $env/deployment.yml
+          done
+          git diff
+      - name: Add and Commit file
+        if: steps.semantic.outputs.new_release_published == 'true' || github.event.inputs.environments != ''
+        uses: EndBug/add-and-commit@v7
+        with:
+          branch: main
+          add: '*'
+          cwd: vsp-infra-application-manifests/apps/vsp-tools-backend/vets-api-pghero
+          author_name: va-vsp-bot
+          author_email: devops@va.gov
+          message: 'auto update pghero ${{ needs.prepare-values.outputs.environments }} images'
+

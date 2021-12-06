@@ -1,0 +1,9 @@
+{
+  "components": [
+    {
+      "name": "pghero",
+      "version": "v2.8.1",
+      "repo": "ankane/pghero"
+    }
+  ]
+}
