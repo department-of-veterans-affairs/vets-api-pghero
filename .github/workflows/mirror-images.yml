@@ -1,16 +1,15 @@
 name: Mirror pghero image to ECR when versions.json/Dockerfile changes
 
-on: [push]
-#  push:
-#    branches:
-#      - master
-#      - lhattamer-add-gha
-#    paths:
-#      - "versions.json"
-#      - "Dockerfile"
-#  schedule:
-#    - cron: '0 0 1,15 * *'
-#  workflow_dispatch:
+on:
+ push:
+   branches:
+     - master
+   paths:
+     - "versions.json"
+     - "Dockerfile"
+ schedule:
+   - cron: '0 0 1,15 * *'
+ workflow_dispatch:
 
 jobs:
   prepare-build:
