@@ -97,6 +97,7 @@ jobs:
         if: #steps.semantic.outputs.new_release_published == 'true' || github.event.inputs.environments != ''
         uses: EndBug/add-and-commit@v7
         with:
+          branch: main
           add: '*'
           cwd: vsp-infra-application-manifests/apps/vsp-tools-backend/vets-api-pghero
           author_name: va-vsp-bot
