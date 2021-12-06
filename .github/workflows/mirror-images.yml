@@ -5,7 +5,7 @@ on:
    #   branches:
    #     - master
    paths:
-     - ".github/workflow/mirror-images.yml"
+     - ".github/workflows/mirror-images.yml"
  schedule:
    - cron: '0 0 1,15 * *'
  workflow_dispatch:
