@@ -1,4 +1,4 @@
-name: Mirror pghero images to ECR when versions.json/Dockerfile changes
+name: Mirror pghero image to ECR when versions.json/Dockerfile changes
 
 on: [push]
 #  push:
