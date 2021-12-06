@@ -60,7 +60,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ env.VA_VSP_BOT_GITHUB_TOKEN }}
       - name: Install yq if needed
-        if: steps.semantic.outputs.new_release_published == 'true' || github.event.inputs.environments != ''
+        # if: steps.semantic.outputs.new_release_published == 'true' || github.event.inputs.environments != ''
         run: |
           sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
           sudo add-apt-repository ppa:rmescandon/yq
@@ -80,7 +80,7 @@ jobs:
           fetch-depth: 1
           path: vsp-infra-application-manifests
       - name: Update image name in Manifest repo
-        if: steps.semantic.outputs.new_release_published == 'true' || github.event.inputs.environments != ''
+        if: #steps.semantic.outputs.new_release_published == 'true' || github.event.inputs.environments != ''
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: dsva/pghero
@@ -94,7 +94,7 @@ jobs:
           done
           git diff
       - name: Add and Commit file
-        if: steps.semantic.outputs.new_release_published == 'true' || github.event.inputs.environments != ''
+        if: #steps.semantic.outputs.new_release_published == 'true' || github.event.inputs.environments != ''
         uses: EndBug/add-and-commit@v7
         with:
           add: '*'
