@@ -35,10 +35,10 @@ jobs:
     needs: define-images
     strategy:
       matrix:
-        versions: ${{ fromJson(env.IMAGES) }}
+        images: ${{ fromJson( ${{ env.IMAGES }} ) }}
     steps:
       - uses: actions/checkout@v2
-      - name: Build and push argo images to ECR
+      - name: Build and push ${{ matrix.images['name']}} images to ECR
         uses: kciter/aws-ecr-action@v4
         with:
           access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -46,6 +46,6 @@ jobs:
           account_id: '008577686731'
           repo: dsva/pghero
           region: us-gov-west-1
-          tags: "${{ matrix.versions['name']}}-${{ matrix.versions['version'] }}"
+          tags: "${{ matrix.images['name']}}-${{ matrix.images['version'] }}"
           dockerfile: Dockerfile
-          extra_build_args: "--build-arg APP_VERSION=${{ matrix.versions['version'] }} --build-arg REPO=${{ matrix.versions['repo'] }}"
+          extra_build_args: "--build-arg APP_VERSION=${{ matrix.images['version'] }} --build-arg REPO=${{ matrix.images['repo'] }}"
