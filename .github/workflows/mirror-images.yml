@@ -4,36 +4,38 @@ on:
  push:
    branches:
      - master
-   paths:
-     - "versions.json"
-     - "Dockerfile"
+     #   paths:
+     #     - ".github/workflow/mirror-images"
  schedule:
    - cron: '0 0 1,15 * *'
  workflow_dispatch:
 
 jobs:
-  prepare-build:
+  define-images:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - name: Capture argo image versions
-        id: componentVersions
+      - name: Define pghero images
         run: |
-          echo "::set-output name=config::$(jq -c .components versions.json)"
-      - name: Upload versions file
-        uses: actions/upload-artifact@v2
-        with:
-          name: versions
-          path: versions.json
-    outputs:
-      config: ${{ steps.componentVersions.outputs.config }}
+          IMAGES=$(cat << EOF
+          [  
+            {
+              name: "pghero",
+              version: "v2.8.1",
+              repo: "ankane/pghero"
+            }
+          ]
+          EOF
+          )
+          echo "IMAGES<<EOF" >> $GITHUB_ENV
+          echo "$IMAGES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
   mirror:
     runs-on: ubuntu-20.04
-    needs: prepare-build
+    needs: define-images
     strategy:
       matrix:
-        versions: ${{ fromJson(needs.prepare-build.outputs.config) }}
+        versions: ${{ fromJson(env.IMAGES) }}
     steps:
       - uses: actions/checkout@v2
       - name: Build and push argo images to ECR
