@@ -93,13 +93,13 @@ jobs:
             yq e -i '.spec.template.spec.containers.[0].image = "008577686731.dkr.ecr.us-gov-west-1.amazonaws.com/dsva/pghero:pghero-${{ env.pghero }}"' $env/deployment.yml
           done
           git diff
-      # - name: Add and Commit file
-      #   if: steps.semantic.outputs.new_release_published == 'true' || github.event.inputs.environments != ''
-      #   uses: EndBug/add-and-commit@v7
-      #   with:
-      #     add: '*'
-      #     cwd: vsp-infra-application-manifests/apps/vsp-tools-backend/vets-api-pghero
-      #     author_name: va-vsp-bot
-      #     author_email: devops@va.gov
-      #     message: 'auto update pghero ${{ needs.prepare-values.outputs.environments }} images'
+      - name: Add and Commit file
+        if: steps.semantic.outputs.new_release_published == 'true' || github.event.inputs.environments != ''
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: '*'
+          cwd: vsp-infra-application-manifests/apps/vsp-tools-backend/vets-api-pghero
+          author_name: va-vsp-bot
+          author_email: devops@va.gov
+          message: 'auto update pghero ${{ needs.prepare-values.outputs.environments }} images'
 
