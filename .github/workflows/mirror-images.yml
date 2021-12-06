@@ -47,4 +47,4 @@ jobs:
           region: us-gov-west-1
           tags: "${{ matrix.versions['name']}}-${{ matrix.versions['version'] }}"
           dockerfile: Dockerfile
-          extra_build_args: "--build-arg APP_VERSION=${{ matrix.versions['version'] }}"
+          extra_build_args: "--build-arg APP_VERSION=${{ matrix.versions['version'] }} REPO=${{ matrix.versions['repo'] }}"
