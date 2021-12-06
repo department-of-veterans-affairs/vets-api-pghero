@@ -37,7 +37,7 @@ jobs:
     needs: define-images
     strategy:
       matrix:
-        images: ${{ fromJson(define-images.outputs.images) }}
+        images: ${{ fromJson(needs.define-images.outputs.images) }}
     steps:
       - uses: actions/checkout@v2
       - name: Build and push ${{ matrix.images['name']}} images to ECR
