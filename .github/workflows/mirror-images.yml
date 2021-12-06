@@ -26,16 +26,18 @@ jobs:
           ]
           EOF
           )
-          echo "IMAGES<<EOF" >> $GITHUB_ENV
-          echo "$IMAGES" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          IMAGES="${IMAGES//'%'/'%25'}"
+          IMAGES="${IMAGES//$'\n'/'%0A'}"
+          IMAGES="${IMAGES//$'\r'/'%0D'}"
+          echo "::set-output name=images::$IMAGES"
+        id: images
 
   mirror:
     runs-on: ubuntu-20.04
     needs: define-images
     strategy:
       matrix:
-        images: ${{ fromJson( ${{ env.IMAGES }} ) }}
+        images: ${{ fromJson(define-images.outputs.images) }}
     steps:
       - uses: actions/checkout@v2
       - name: Build and push ${{ matrix.images['name']}} images to ECR
