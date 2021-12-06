@@ -1,16 +1,16 @@
 name: Mirror argo images to ECR when versions.json/Dockerfile changes
 
-on:
-  push:
-    branches:
-      - master
-      - lhattamer-add-gha
-    paths:
-      - "versions.json"
-      - "Dockerfile"
-  schedule:
-    - cron: '0 0 1,15 * *'
-  workflow_dispatch:
+on: [push]
+#  push:
+#    branches:
+#      - master
+#      - lhattamer-add-gha
+#    paths:
+#      - "versions.json"
+#      - "Dockerfile"
+#  schedule:
+#    - cron: '0 0 1,15 * *'
+#  workflow_dispatch:
 
 jobs:
   prepare-build:
