@@ -2,10 +2,10 @@ name: Mirror pghero image to ECR when versions.json/Dockerfile changes
 
 on:
  push:
-   branches:
-     - master
-     #   paths:
-     #     - ".github/workflow/mirror-images"
+   #   branches:
+   #     - master
+   paths:
+     - ".github/workflow/mirror-images"
  schedule:
    - cron: '0 0 1,15 * *'
  workflow_dispatch:
