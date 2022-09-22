@@ -11,7 +11,7 @@ on:
         required: true
 
 env:
-  autoDeployEnvs: 'dev staging prod sandbox'
+  autoDeployEnvs: 'dev staging'
 
 jobs:
   prepare-values:
@@ -84,7 +84,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: dsva/pghero
         run: |
-          cd vsp-infra-application-manifests/apps/vsp-tools-backend/vets-api-pghero
+          cd vsp-infra-application-manifests/apps/pghero
           # Update pghero image
           envs=( ${{ needs.prepare-values.outputs.environments }} )
           for env in ${envs[*]};
@@ -98,7 +98,7 @@ jobs:
         with:
           branch: main
           add: '*'
-          cwd: vsp-infra-application-manifests/apps/vsp-tools-backend/vets-api-pghero
+          cwd: vsp-infra-application-manifests/apps/pghero
           author_name: va-vsp-bot
           author_email: devops@va.gov
           message: 'auto update pghero ${{ needs.prepare-values.outputs.environments }} images'
