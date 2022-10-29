@@ -1,15 +1,8 @@
-# Chart.yaml
-#
-# This file defines chart parameters like name, description, type, version, and appVersion.
-#
 apiVersion: v2
-name: vets-api-pghero
-description: A Helm chart for Kubernetes
+name: hello-world
+description: Example of helm chart using httpbin
 type: application
 version: 0.1.0
-appVersion: "1.0.0"
-dependencies:
-  - name: vets-api-pghero
-    version: "1.2.1"
-    repository: "https://github.com/department-of-veterans-affairs/vets-api-pghero"
-
+appVersion: "v2.3.0"
+keywords:
+  - httpbin

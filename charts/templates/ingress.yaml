@@ -1,0 +1,25 @@
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "hello-world.fullname" . -}}
+{{- $svcPort := .Values.service.port -}}
+{{- $environment := .Values.ingress.environment -}}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "hello-world.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`{{ $fullName }}-{{ $environment }}.vfs.va.gov`) && PathPrefix(`/`)
+      priority: 10
+      services:
+        - name: {{ $fullName }}
+          port: {{ $svcPort }}
+{{- end }}

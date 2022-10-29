@@ -1,0 +1,13 @@
+{{- $fullName := include "hello-world.fullname" . -}}
+{{- $environment := .Values.ingress.environment -}}
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: hello-world
+spec:
+  endpoints:
+  - dnsName: '{{ $fullName }}-{{ $environment }}.vfs.va.gov'
+    recordTTL: 180
+    recordType: CNAME
+    targets:
+    - 'traefik-{{ $environment }}.vfs.va.gov'
