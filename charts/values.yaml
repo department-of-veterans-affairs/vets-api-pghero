@@ -2,10 +2,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-appName: ""
+appName: "pghero-helm102"
 image:
-  value: ""
-  tag: ""
+  value: "008577686731.dkr.ecr.us-gov-west-1.amazonaws.com/dsva/pghero"
+  tag: "pghero-v3.0.0"
   pullPolicy: Always
   
 web:
@@ -15,14 +15,22 @@ web:
     targets: ""
   ingress:
     enabled: true
-    entryPoints: web
-      routes:
-        - kind: Rule
-          match: Host(`pghero-helm102-dev.vfs.va.gov`) && PathPrefix(`/`)
-          priority: 10
-          services:
-            - name: pghero
-              port: 9090
-          middlewares:
-            - name: pghero-basic-auth
- 
+    entryPoint: web
+    route:
+      kind: Rule
+      match: Host(`pghero-helm102-dev.vfs.va.gov`) && PathPrefix(`/`)
+      priority: 10
+      service:
+        name: pghero
+        port: 9090
+      middleware:
+        name: pghero-basic-auth
+   envVars:
+     - name: PG_DEV_DB_PASSWORD
+       valueFrom:
+         secretKeyRef:
+           name: pghero-secrets
+           key: pg-dev-dbpassword
+     - name: PGHERO_STATS_DATABASE_URL
+       value: "postgres://vets_api:$(PG_DEV_DB_PASSWORD)@dsva-vets-api-dev.cdqbofmbcmtd.us-gov-west-1.rds.amazonaws.com:5432/dsva_vets_api_dev?pool=16"
+       
