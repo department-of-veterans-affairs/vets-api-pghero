@@ -18,7 +18,7 @@ web:
     entryPoints: web
       routes:
         - kind: Rule
-          match: Host(`pghero-helm102-dev.vfs.va.govv`) && PathPrefix(`/`)
+          match: Host(`pghero-helm102-dev.vfs.va.gov`) && PathPrefix(`/`)
           priority: 10
           services:
             - name: pghero
