@@ -17,16 +17,12 @@ spec:
     spec:
       containers:
         - name: pghero
-          image: 008577686731.dkr.ecr.us-gov-west-1.amazonaws.com/dsva/pghero:pghero-v3.0.0
+          image: {{ .Values.image }}:{{ .Values.tag }}
           imagePullPolicy: Always
           env:
-            - name: PG_DEV_DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: pghero-secrets
-                  key: pg-dev-dbpassword
-            - name: PGHERO_STATS_DATABASE_URL
-              value: "postgres://vets_api:$(PG_DEV_DB_PASSWORD)@dsva-vets-api-dev.cdqbofmbcmtd.us-gov-west-1.rds.amazonaws.com:5432/dsva_vets_api_dev?pool=16"
+            {{- range .Values.web.envVars }} # Iterating over a Complex Structure
+            - {{ . | toYaml | nindent 12 -}}
+            {{- end }}
           volumeMounts:
             - name: pghero-configmap
               mountPath: /app/config/pghero.yml
