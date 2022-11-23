@@ -1,0 +1,10 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: pghero-basic-auth
+  labels:
+    app.kubernetes.io/name: pghero
+spec:
+  basicAuth:
+    secret: pghero-basic-auth-secrets

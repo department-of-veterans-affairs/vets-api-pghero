@@ -1,0 +1,20 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: pghero
+  labels:
+    app.kubernetes.io/name: pghero
+
+spec:
+  entryPoints:
+    - web
+  routes:
+  - kind: Rule
+    match: Host(`pghero-helm102-hello-world-dev.vfs.va.gov`) && PathPrefix(`/`)
+    priority: 10
+    services:
+      - name: pghero
+        port: 9090
+    middlewares:
+      - name: pghero-basic-auth

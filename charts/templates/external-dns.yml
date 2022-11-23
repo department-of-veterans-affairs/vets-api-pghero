@@ -1,0 +1,11 @@
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: vsp-tools-backend
+spec:
+  endpoints:
+  - dnsName: 'pghero-helm102-hello-world-dev.vfs.va.gov'
+    recordTTL: 180
+    recordType: CNAME
+    targets:
+    - 'traefik-dev.vfs.va.gov'

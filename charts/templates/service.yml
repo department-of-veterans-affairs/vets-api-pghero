@@ -1,0 +1,21 @@
+---
+# Source: confluence/templates/service.yaml
+# Documentation: https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: v1
+kind: Service
+metadata:
+  name: pghero
+  labels:
+    app.kubernetes.io/name: pghero
+
+spec:
+  ports:
+    # port is what this service should serve on, and targetPort is the port in the container.
+    - port: 9090
+      name: dashboard
+      targetPort: 8080
+      protocol: TCP
+  type: ClusterIP
+
+  selector:
+    app.kubernetes.io/name: pghero

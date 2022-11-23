@@ -1,0 +1,99 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: pghero-capture-space-stats
+  labels:
+    app.kubernetes.io/name: pghero
+spec:
+  schedule: "0 8 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: pghero-capture-space-stats
+            image: 008577686731.dkr.ecr.us-gov-west-1.amazonaws.com/dsva/pghero:pghero-v2.8.2
+            imagePullPolicy: Always
+            env:
+              - name: PG_DEV_DB_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: pghero-secrets
+                    key: pg-dev-dbpassword
+              - name: DATABASE_URL
+                value: "postgres://vets_api:$(PG_DEV_DB_PASSWORD)@dsva-vets-api-dev.cdqbofmbcmtd.us-gov-west-1.rds.amazonaws.com:5432/dsva_vets_api_dev?pool=16"
+            command:
+            - /bin/sh
+            - -c
+            - bin/rake pghero:capture_space_stats
+          restartPolicy: OnFailure
+
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: pghero-capture-query-stats
+  labels:
+    app.kubernetes.io/name: pghero
+spec:
+  schedule: "0 8 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: pghero-capture-query-stats
+            image: 008577686731.dkr.ecr.us-gov-west-1.amazonaws.com/dsva/pghero:pghero-v2.8.2
+            imagePullPolicy: Always
+            env:
+              - name: PG_DEV_DB_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: pghero-secrets
+                    key: pg-dev-dbpassword
+              - name: DATABASE_URL
+                value: "postgres://vets_api:$(PG_DEV_DB_PASSWORD)@dsva-vets-api-dev.cdqbofmbcmtd.us-gov-west-1.rds.amazonaws.com:5432/dsva_vets_api_dev?pool=16"
+              - name: PGHERO_STATS_DATABASE_URL
+            command:
+            - /bin/sh
+            - -c
+            - bin/rake pghero:capture_query_stats
+          restartPolicy: OnFailure
+
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: pghero-clean-query-stats
+  labels:
+    app.kubernetes.io/name: pghero
+spec:
+  schedule: "0 0 1,15 * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: pghero-clean-query-stats
+            image: 008577686731.dkr.ecr.us-gov-west-1.amazonaws.com/dsva/pghero:pghero-v2.8.2
+            imagePullPolicy: Always
+            env:
+              - name: PG_DEV_DB_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: pghero-secrets
+                    key: pg-dev-dbpassword
+              - name: DATABASE_URL
+                value: "postgres://vets_api:$(PG_DEV_DB_PASSWORD)@dsva-vets-api-dev.cdqbofmbcmtd.us-gov-west-1.rds.amazonaws.com:5432/dsva_vets_api_dev?pool=16"
+            command:
+            - /bin/sh
+            - -c
+            - bin/rake pghero:clean_query_stats
+          restartPolicy: OnFailure
