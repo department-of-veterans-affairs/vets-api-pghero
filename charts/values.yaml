@@ -8,9 +8,21 @@ image:
   tag: ""
   pullPolicy: Always
   
-#Web configuration
 web:
   externalDns:
     dnsName: ""
     recordTTL: 180
     targets: ""
+  ingress:
+    enabled: true
+    entryPoints: web
+      routes:
+        - kind: Rule
+          match: Host(`pghero-helm102-dev.vfs.va.govv`) && PathPrefix(`/`)
+          priority: 10
+          services:
+            - name: pghero
+              port: 9090
+          middlewares:
+            - name: pghero-basic-auth
+ 
