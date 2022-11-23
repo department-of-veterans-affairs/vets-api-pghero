@@ -8,13 +8,13 @@ metadata:
 
 spec:
   entryPoints:
-    - web
+    - {{ .Values.web.ingress.route.entryPoint }}
   routes:
-  - kind: Rule
-    match: Host(`pghero-helm102-hello-world-dev.vfs.va.gov`) && PathPrefix(`/`)
-    priority: 10
-    services:
-      - name: pghero
-        port: 9090
-    middlewares:
-      - name: pghero-basic-auth
+    - kind: Rule
+      match: {{ .Values.web.ingress.route }}
+      priority: {{ .Values.web.ingress.route.priority }}
+      services:
+        - name: {{ .Values.web.ingress.route.service.name }}
+          port: {{ .Values.web.ingress.route.service.port }}
+      middlewares:
+        - name: {{ .Values.web.ingress.route.middleware.name }}
