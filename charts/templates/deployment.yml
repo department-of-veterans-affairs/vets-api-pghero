@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pghero
+  name: pghero-deploy
   labels:
     app.kubernetes.io/name: pghero
 spec:

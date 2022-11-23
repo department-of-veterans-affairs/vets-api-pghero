@@ -25,12 +25,12 @@ web:
         port: 9090
       middleware:
         name: pghero-basic-auth
-   envVars:
-     - name: PG_DEV_DB_PASSWORD
-       valueFrom:
-         secretKeyRef:
-           name: pghero-secrets
-           key: pg-dev-dbpassword
-     - name: PGHERO_STATS_DATABASE_URL
-       value: "postgres://vets_api:$(PG_DEV_DB_PASSWORD)@dsva-vets-api-dev.cdqbofmbcmtd.us-gov-west-1.rds.amazonaws.com:5432/dsva_vets_api_dev?pool=16"
+  envVars:
+    - name: PG_DEV_DB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: pghero-secrets
+          key: pg-dev-dbpassword
+    - name: PGHERO_STATS_DATABASE_URL
+      value: "postgres://vets_api:$(PG_DEV_DB_PASSWORD)@dsva-vets-api-dev.cdqbofmbcmtd.us-gov-west-1.rds.amazonaws.com:5432/dsva_vets_api_dev?pool=16"
        
