@@ -8,10 +8,11 @@ metadata:
 
 spec:
   entryPoints:
-    - {{ .Values.web.ingress.route.entryPoint }}
+    - {{ .Values.web.ingress.entryPoint }}
   routes:
     - kind: Rule
-      match: {{ .Values.web.ingress.route }}
+      # match: {{ .Values.web.ingress.route }}
+      match: "Host(`pghero-helm102-dev.vfs.va.gov`) && PathPrefix(`/`)"
       priority: {{ .Values.web.ingress.route.priority }}
       services:
         - name: {{ .Values.web.ingress.route.service.name }}

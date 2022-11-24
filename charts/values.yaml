@@ -10,9 +10,9 @@ image:
   
 web:
   externalDns:
-    dnsName: ""
+    dnsName: pghero-helm102-dev.vfs.va.gov
     recordTTL: 180
-    targets: ""
+    target: traefik-dev.vfs.va.gov 
   ingress:
     enabled: true
     entryPoint: web

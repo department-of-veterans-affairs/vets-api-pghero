@@ -1,27 +1,24 @@
 apiVersion: v1
 entries:
-  hello-world:
-  - apiVersion: v2
-    appVersion: v2.3.0
-    created: "2022-11-23T12:41:24.070096-08:00"
-    description: Example of helm chart using httpbin
-    digest: 435b56697bb0f1bb8bbc8e32fcce0887806efc0fa7292b8d99c7e195186b664b
-    keywords:
-    - httpbin
-    name: hello-world
-    type: application
-    urls:
-    - hello-world-0.1.0.tgz
-    version: 0.1.0
   pghero-helm102:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-11-23T12:41:24.070548-08:00"
+    created: "2022-11-24T13:49:30.128768-08:00"
     description: A Helm chart for Kubernetes
-    digest: d7e9b9cbc9d206cf96dd4cd910d42074fd627a2ab22fde000ad4aab096ba6167
+    digest: 0bb7779d6e5b6e209aadab8883dc8d04f3719a8b3be06949f100153a184667dc
+    name: pghero-helm102
+    type: application
+    urls:
+    - pghero-helm102-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-24T13:49:30.128431-08:00"
+    description: A Helm chart for Kubernetes
+    digest: 62e68b3ff91b77f9928a022dce1daa97a93a4920e3c13c78b807f543adfa6433
     name: pghero-helm102
     type: application
     urls:
     - pghero-helm102-0.1.1.tgz
     version: 0.1.1
-generated: "2022-11-23T12:41:24.068905-08:00"
+generated: "2022-11-24T13:49:30.127965-08:00"

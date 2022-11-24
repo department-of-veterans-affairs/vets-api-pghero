@@ -10,4 +10,4 @@ spec:
     recordTTL: {{ .Values.web.externalDns.recordTTL }}
     recordType: CNAME
     targets:
-    - {{ .Values.web.externalDns.targets }}
+    - {{ .Values.web.externalDns.target }}

@@ -16,13 +16,11 @@ spec:
         app.kubernetes.io/name: pghero
     spec:
       containers:
-        - name: pghero
-          image: {{ .Values.image }}:{{ .Values.tag }}
-          imagePullPolicy: Always
-          env:
-            {{- range .Values.web.envVars }} # Iterating over a Complex Structure
-            - {{ . | toYaml | nindent 12 -}}
-            {{- end }}
+        - image: "{{ .Values.image.value }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          # name: {{ .Values.appName }}-web
+          name: pghero
+          # env:
           volumeMounts:
             - name: pghero-configmap
               mountPath: /app/config/pghero.yml
