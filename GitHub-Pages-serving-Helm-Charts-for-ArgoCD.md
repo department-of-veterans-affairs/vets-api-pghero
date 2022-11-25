@@ -100,7 +100,7 @@ must output this page from the `parent-helm-charts' branch:
 ```
 helm repo remove vets-api-pghero 
 helm repo add vets-api-pghero https://department-of-veterans-affairs.github.io/vets-api-pghero/
-helm search repo pghero -o json -l | jq
+helm search repo pghero -o json --versions | jq
 ```
 > [  
 >   {  
@@ -122,18 +122,57 @@ helm search repo pghero -o json -l | jq
 
 [Helm Dependency](https://helm.sh/docs/helm/helm_dependency/)
 
+```
+helm dependency update
+helm template . --debug
+tree ../../pghero-helm102/dev
+
+../../pghero-helm102/dev
+├── Chart.lock
+├── Chart.yaml
+├── charts
+│   └── pghero-helm102-0.1.2.tgz
+├── templates
+│   └── secrets.yaml
+└── values.yaml
+
+rm -rf Chart.lock charts/
+git status
+git add .
+git commit -am 0.1.2
+git push
+```
+
 #### Troubleshooting
+
+Listing dependencies 
+
+```
+helm dependency list
+```
 
 One possibility is a manual `helm install` run:
 
 ```
-helm install pghero-helm102-dev vets-api-pghero/pghero-helm102 --namespace pghero-helm102 --replace --debug 
+helm repo add vets-api-pghero https://department-of-veterans-affairs.github.io/vets-api-pghero/
+helm repo update
+helm install pghero-helm102-dev vets-api-pghero/pghero-helm102 --namespace pghero-helm102 \
+--replace \
+--debug 
 ```
 
-### References
+In a few minutes the endpoint must be responding:
 
-- [confluence: Parent Helm Chart Setup by Rachal Cassity](https://vfs.atlassian.net/wiki/spaces/TT1/pages/2400256031/Parent+Helm+Chart+Setup)
-- [levelup: Data exchange between parent and child chart in helm](https://levelup.gitconnected.com/helm-data-sharing-between-parent-and-child-chart-c4487a452d4e)
+```
+curl --proxy socks5h://127.0.0.1:2001 -sI http://pghero-helm102-dev.vfs.va.gov 
+```
+
+### Links
+
+- [confluence: Parent Helm Chart Setup](https://vfs.atlassian.net/wiki/spaces/TT1/pages/2400256031/Parent+Helm+Chart+Setup)
+- [levelup1: Helm Chart Dependencies](https://levelup.gitconnected.com/helm-dependencies-1907facbe410)
+- [levelup2: Data exchange between parent and child chart in helm](https://levelup.gitconnected.com/helm-data-sharing-between-parent-and-child-chart-c4487a452d4e)
+- [levelup3: Helm Templates Variables overview](https://medium.com/codex/helm-variables-df1dca52ed46)
 - [visualstudio: Working with Kubernetes in VS Code](https://code.visualstudio.com/docs/azure/kubernetes)
 
 
