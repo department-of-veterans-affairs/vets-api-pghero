@@ -3,8 +3,9 @@ apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: pghero-capture-space-stats
+  namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: pghero
+    app.kubernetes.io/name: "{{ .Values.app.name }}:{{ .Values.app.env }}"
 spec:
   schedule: "0 8 * * *"
   successfulJobsHistoryLimit: 1
@@ -15,7 +16,7 @@ spec:
         spec:
           containers:
           - name: pghero-capture-space-stats
-            image: 008577686731.dkr.ecr.us-gov-west-1.amazonaws.com/dsva/pghero:pghero-v2.8.2
+            image: "{{ .Values.image.value }}:{{ .Values.image.tag }}"
             imagePullPolicy: Always
             env:
               - name: PG_DEV_DB_PASSWORD
@@ -36,8 +37,9 @@ apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: pghero-capture-query-stats
+  namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: pghero
+    app.kubernetes.io/name: "{{ .Values.app.name }}:{{ .Values.app.env }}"
 spec:
   schedule: "0 8 * * *"
   successfulJobsHistoryLimit: 1
@@ -48,7 +50,7 @@ spec:
         spec:
           containers:
           - name: pghero-capture-query-stats
-            image: 008577686731.dkr.ecr.us-gov-west-1.amazonaws.com/dsva/pghero:pghero-v2.8.2
+            image: "{{ .Values.image.value }}:{{ .Values.image.tag }}"
             imagePullPolicy: Always
             env:
               - name: PG_DEV_DB_PASSWORD
@@ -70,8 +72,9 @@ apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: pghero-clean-query-stats
+  namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: pghero
+    app.kubernetes.io/name: "{{ .Values.app.name }}:{{ .Values.app.env }}"
 spec:
   schedule: "0 0 1,15 * *"
   successfulJobsHistoryLimit: 1
@@ -82,7 +85,7 @@ spec:
         spec:
           containers:
           - name: pghero-clean-query-stats
-            image: 008577686731.dkr.ecr.us-gov-west-1.amazonaws.com/dsva/pghero:pghero-v2.8.2
+            image: "{{ .Values.image.value }}:{{ .Values.image.tag }}"
             imagePullPolicy: Always
             env:
               - name: PG_DEV_DB_PASSWORD

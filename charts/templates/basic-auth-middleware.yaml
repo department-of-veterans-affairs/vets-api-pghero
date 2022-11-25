@@ -3,8 +3,9 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: pghero-basic-auth
+  namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: pghero
+    app.kubernetes.io/name: "{{ .Values.app.name }}:{{ .Values.app.env }}"
 spec:
   basicAuth:
     secret: pghero-basic-auth-secrets

@@ -3,34 +3,41 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pghero-deploy
+  namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: pghero
+    app.kubernetes.io/name: "{{ .Values.app.name }}:{{ .Values.app.env }}"
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: pghero
+      app.kubernetes.io/name: "{{ .Values.app.name }}:{{ .Values.app.env }}"
   replicas: 1
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: pghero
+        app.kubernetes.io/name: "{{ .Values.app.name }}:{{ .Values.app.env }}"
     spec:
       containers:
-        - image: "{{ .Values.image.value }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          # name: {{ .Values.appName }}-web
-          name: pghero
-          # env:
+        - name: pghero
+          image: 008577686731.dkr.ecr.us-gov-west-1.amazonaws.com/dsva/pghero:pghero-v3.0.0
+          imagePullPolicy: Always
+          env:
+            - name: PG_DEV_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pghero-secrets
+                  key: pg-dev-dbpassword
+            - name: PGHERO_STATS_DATABASE_URL
+              value: "postgres://vets_api:$(PG_DEV_DB_PASSWORD)@dsva-vets-api-dev.cdqbofmbcmtd.us-gov-west-1.rds.amazonaws.com:5432/dsva_vets_api_dev?pool=16"
           volumeMounts:
             - name: pghero-configmap
               mountPath: /app/config/pghero.yml
               readOnly: true
               subPath: pghero.yml
           ports:
-            - name: dashboard
+            - name: cp8080
               containerPort: 8080
       volumes:
         - name: pghero-configmap
           configMap:
             defaultMode: 0644
-            name: pghero
+            name: "{{ .Values.app.name }}:{{ .Values.app.env }}"

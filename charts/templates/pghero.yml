@@ -2,7 +2,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: pghero-cm
+  name: "{{ .Values.app.name }}:{{ .Values.app.env }}"
+  namespace: {{ .Release.Namespace }}
 data:
   pghero.yml: |
     databases:

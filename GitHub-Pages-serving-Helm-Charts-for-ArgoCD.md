@@ -145,6 +145,8 @@ git push
 
 #### Troubleshooting
 
+Try running all charts through helm template and then taking the output through `kubectl apply --dry-run`, which acts as a linter. 
+
 Listing dependencies 
 
 ```
@@ -156,8 +158,13 @@ One possibility is a manual `helm install` run:
 ```
 helm repo add vets-api-pghero https://department-of-veterans-affairs.github.io/vets-api-pghero/
 helm repo update
-helm install pghero-helm102-dev vets-api-pghero/pghero-helm102 --namespace pghero-helm102 \
---replace \
+helm install pghero-helm102-dev vets-api-pghero/pghero-helm102 --namespace pghero-helm102 --replace \
+--debug 
+```
+or
+
+```
+helm upgrade --install pghero-helm102-dev vets-api-pghero/pghero-helm102 --namespace pghero-helm102 \
 --debug 
 ```
 

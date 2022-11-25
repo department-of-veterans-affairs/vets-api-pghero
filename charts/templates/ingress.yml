@@ -3,8 +3,9 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: pghero-ingress
+  namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: pghero
+    app.kubernetes.io/name: "{{ .Values.app.name }}:{{ .Values.app.env }}"
 
 spec:
   entryPoints:

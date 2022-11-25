@@ -2,7 +2,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-appName: "pghero-helm102"
+app:
+  name: "pghero-helm102"
+  env: "dev"
+
 image:
   value: "008577686731.dkr.ecr.us-gov-west-1.amazonaws.com/dsva/pghero"
   tag: "pghero-v3.0.0"
@@ -21,7 +24,7 @@ web:
       match: Host(`pghero-helm102-dev.vfs.va.gov`) && PathPrefix(`/`)
       priority: 10
       service:
-        name: web
+        name: svc9090
         port: 9090
       middleware:
         name: pghero-basic-auth
