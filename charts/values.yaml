@@ -21,7 +21,7 @@ web:
       match: Host(`pghero-helm102-dev.vfs.va.gov`) && PathPrefix(`/`)
       priority: 10
       service:
-        name: pghero-svc
+        name: web
         port: 9090
       middleware:
         name: pghero-basic-auth

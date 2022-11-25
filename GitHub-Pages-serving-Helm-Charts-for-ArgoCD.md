@@ -46,7 +46,7 @@ helm package ../vets-api-pghero/charts --destination ../vets-api-pghero/docs
 ```
 > Successfully packaged chart and saved it to: ../vets-api-pghero/docs/pghero-helm102-0.1.2.tgz 
 
-The `helm repo index` command rebuilds the` index.yaml` file:
+The `helm repo index` command rebuilds the `index.yaml` file:
 
 ```
 helm repo index ../vets-api-pghero/docs

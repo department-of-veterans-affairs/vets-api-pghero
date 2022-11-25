@@ -12,7 +12,7 @@ spec:
   ports:
     # port is what this service should serve on, and targetPort is the port in the container.
     - port: 9090
-      name: dashboard
+      name: web
       targetPort: 8080
       protocol: TCP
   type: ClusterIP
