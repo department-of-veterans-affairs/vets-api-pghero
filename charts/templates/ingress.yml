@@ -2,11 +2,13 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: pghero-ingress
+  name: pghero-route
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: "{{ .Values.app.name }}:{{ .Values.app.env }}"
-
+    app.kubernetes.io/name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+  annotations:
+    app.kubernetes.io/managed-by: Helm
+    meta.helm.sh/release-name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
 spec:
   entryPoints:
     - {{ .Values.web.ingress.entryPoint }}

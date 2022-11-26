@@ -156,6 +156,7 @@ helm dependency list
 One possibility is a manual `helm install` run:
 
 ```
+helm list -A
 helm repo add vets-api-pghero https://department-of-veterans-affairs.github.io/vets-api-pghero/
 helm repo update
 helm install pghero-helm102-dev vets-api-pghero/pghero-helm102 --namespace pghero-helm102 --replace \

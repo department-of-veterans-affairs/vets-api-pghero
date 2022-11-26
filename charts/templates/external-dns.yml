@@ -2,8 +2,11 @@
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: {{ .Values.web.externalDns.dnsName }}
+  name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
   namespace: {{ .Release.Namespace }}
+  annotations:
+    app.kubernetes.io/managed-by: Helm
+    meta.helm.sh/release-name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
 spec:
   endpoints:
   - dnsName: {{ .Values.web.externalDns.dnsName }}

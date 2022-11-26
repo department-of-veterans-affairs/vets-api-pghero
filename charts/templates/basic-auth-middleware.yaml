@@ -5,7 +5,10 @@ metadata:
   name: pghero-basic-auth
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: "{{ .Values.app.name }}:{{ .Values.app.env }}"
+    app.kubernetes.io/name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+  annotations:
+    app.kubernetes.io/managed-by: Helm
+    meta.helm.sh/release-name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
 spec:
   basicAuth:
     secret: pghero-basic-auth-secrets

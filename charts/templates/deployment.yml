@@ -5,16 +5,19 @@ metadata:
   name: pghero-deploy
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: "{{ .Values.app.name }}:{{ .Values.app.env }}"
+    app.kubernetes.io/name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+  annotations:
+    app.kubernetes.io/managed-by: Helm
+    meta.helm.sh/release-name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: "{{ .Values.app.name }}:{{ .Values.app.env }}"
+      app.kubernetes.io/name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
   replicas: 1
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: "{{ .Values.app.name }}:{{ .Values.app.env }}"
+        app.kubernetes.io/name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
     spec:
       containers:
         - name: pghero
@@ -40,4 +43,4 @@ spec:
         - name: pghero-configmap
           configMap:
             defaultMode: 0644
-            name: "{{ .Values.app.name }}:{{ .Values.app.env }}"
+            name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
