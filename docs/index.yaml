@@ -3,9 +3,19 @@ entries:
   pghero-helm102:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-11-26T11:51:25.647302-08:00"
+    created: "2022-11-27T21:33:17.844823-08:00"
     description: A Helm chart for Kubernetes
-    digest: cab430a350b802b7e184cddbcd1954d3036b357570eaf7a3a2faf63ee48b4806
+    digest: 14a70576726e34294dfd0e3648d09ab5dab55bfb3771afaa56904948beaf79e3
+    name: pghero-helm102
+    type: application
+    urls:
+    - pghero-helm102-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-27T21:33:17.844505-08:00"
+    description: A Helm chart for Kubernetes
+    digest: 5a742f6320f6e7eca9ae0419e4ab5249668a368ca19c91f8f8e7a4a481eb9dc6
     name: pghero-helm102
     type: application
     urls:
@@ -13,7 +23,7 @@ entries:
     version: 0.1.5
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-11-26T11:51:25.64697-08:00"
+    created: "2022-11-27T21:33:17.843757-08:00"
     description: A Helm chart for Kubernetes
     digest: c3737a1bd111af2602aaf83148e88463ea5848cb226cee86234acb5332b78803
     name: pghero-helm102
@@ -23,7 +33,7 @@ entries:
     version: 0.1.4
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-11-26T11:51:25.646165-08:00"
+    created: "2022-11-27T21:33:17.842867-08:00"
     description: A Helm chart for Kubernetes
     digest: 9361b7069ab6d289a3608007c03a03f75ad55b0fb85123ea2eba48d8fb0e8f30
     name: pghero-helm102
@@ -33,7 +43,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-11-26T11:51:25.642897-08:00"
+    created: "2022-11-27T21:33:17.842058-08:00"
     description: A Helm chart for Kubernetes
     digest: 3e8a16cb6894266f1c69e849f8eacb3f593a04ec9aee924a1c4d3fb118ad3b04
     name: pghero-helm102
@@ -43,7 +53,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-11-26T11:51:25.641956-08:00"
+    created: "2022-11-27T21:33:17.84107-08:00"
     description: A Helm chart for Kubernetes
     digest: 62e68b3ff91b77f9928a022dce1daa97a93a4920e3c13c78b807f543adfa6433
     name: pghero-helm102
@@ -51,4 +61,4 @@ entries:
     urls:
     - pghero-helm102-0.1.1.tgz
     version: 0.1.1
-generated: "2022-11-26T11:51:25.641099-08:00"
+generated: "2022-11-27T21:33:17.839916-08:00"

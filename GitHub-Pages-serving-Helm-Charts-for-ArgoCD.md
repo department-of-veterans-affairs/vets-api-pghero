@@ -165,8 +165,9 @@ helm install pghero-helm102-dev vets-api-pghero/pghero-helm102 --namespace pgher
 or
 
 ```
+helm repo update
 helm upgrade --install pghero-helm102-dev vets-api-pghero/pghero-helm102 --namespace pghero-helm102 \
---debug 
+--debug
 ```
 
 In a few minutes the endpoint must be responding:
