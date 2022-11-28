@@ -1,12 +1,16 @@
+# https://vfs.atlassian.net/wiki/spaces/OT/pages/2350645620/Build+a+Helm+chart+for+EKS
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+# https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+  name: pghero-cm
   namespace: {{ .Release.Namespace }}
   annotations:
     app.kubernetes.io/managed-by: Helm
-    meta.helm.sh/release-name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+    argocd.argoproj.io/sync-options: Replace=true
+    meta.helm.sh/release-name: {{ .Release.Namespace }}
 data:
   pghero.yml: |
     databases:

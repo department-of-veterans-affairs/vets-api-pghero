@@ -1,3 +1,6 @@
+# https://vfs.atlassian.net/wiki/spaces/OT/pages/2350645620/Build+a+Helm+chart+for+EKS
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+# https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -5,23 +8,24 @@ metadata:
   name: pghero-deploy
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+    app.kubernetes.io/name: {{ .Release.Namespace }}
   annotations:
     app.kubernetes.io/managed-by: Helm
-    meta.helm.sh/release-name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+    argocd.argoproj.io/sync-options: Replace=true
+    meta.helm.sh/release-name: {{ .Release.Namespace }}
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+      app.kubernetes.io/name: {{ .Release.Namespace }}
   replicas: 1
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+        app.kubernetes.io/name: {{ .Release.Namespace }}
     spec:
       containers:
         - name: pghero
-          image: 008577686731.dkr.ecr.us-gov-west-1.amazonaws.com/dsva/pghero:pghero-v3.0.0
+          image: "{{ .Values.image.value }}:{{ .Values.image.tag }}"
           imagePullPolicy: Always
           env:
             - name: PG_DEV_DB_PASSWORD
@@ -43,4 +47,4 @@ spec:
         - name: pghero-configmap
           configMap:
             defaultMode: 0644
-            name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+            name: {{ .Release.Namespace }}

@@ -1,6 +1,6 @@
 # GitHub Pages serving Helm Charts for ArgoCD
 
-The below mermaid diagram is best viewed in Chrome browser:
+The below mermaid diagram is best viewed in the Chrome browser
 
 ```mermaid
 graph TD
@@ -120,6 +120,26 @@ helm search repo pghero -o json --versions | jq
 
 ### ArgoCD
 
+The below mermaid diagram is best viewed in the Chrome browser
+
+![mermaid
+graph TD
+title(<b>ArgoCD app deployment to different EKS clusters</b>)
+title-->A(ArgoCD app pghero)
+style title fill:#FFF,stroke:#FFF
+linkStyle 0 stroke:#FFF,stroke-width:0;
+    A -->|cluster| B1(fa:fa-cube dev)
+    A -->|cluster| B2(fa:fa-cube prod)
+    B1 -->|namespace| C1(fa:fa-tags pghero)
+    B2 -->|namespace| C2(fa:fa-tags pghero)
+    C1 -->|name| D11(fa:fa-tag service)
+    C1 -->|name| D12(fa:fa-tag ingress)
+    C1 -->|name| D13(fa:fa-tag ...)
+    C2 -->|name| D21(fa:fa-tag service)
+    C2 -->|name| D22(fa:fa-tag ingress)
+    C2 -->|name| D23(fa:fa-tag ...)
+](ArgoCD-app-deployment-to-different-EKS-clusters.png)
+
 [Helm Dependency](https://helm.sh/docs/helm/helm_dependency/)
 
 ```
@@ -178,6 +198,8 @@ curl --proxy socks5h://127.0.0.1:2001 -sI http://pghero-helm102-dev.vfs.va.gov
 
 ### Links
 
+- [confluence: VA.Gov Platform Manual WIP](https://vfs.atlassian.net/wiki/spaces/OT/pages/2354315287/VA.Gov+Platform+Manual+WIP)
+- [confluence: Build a Helm chart for EKS](https://vfs.atlassian.net/wiki/spaces/OT/pages/2350645620/Build+a+Helm+chart+for+EKS)
 - [confluence: Parent Helm Chart Setup](https://vfs.atlassian.net/wiki/spaces/TT1/pages/2400256031/Parent+Helm+Chart+Setup)
 - [levelup1: Helm Chart Dependencies](https://levelup.gitconnected.com/helm-dependencies-1907facbe410)
 - [levelup2: Data exchange between parent and child chart in helm](https://levelup.gitconnected.com/helm-data-sharing-between-parent-and-child-chart-c4487a452d4e)
