@@ -47,4 +47,4 @@ spec:
         - name: pghero-configmap
           configMap:
             defaultMode: 0644
-            name: {{ .Release.Namespace }}
+            name: pghero-cm

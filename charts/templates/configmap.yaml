@@ -1,5 +1,5 @@
 # https://vfs.atlassian.net/wiki/spaces/OT/pages/2350645620/Build+a+Helm+chart+for+EKS
-# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+# https://kubernetes.io/docs/concepts/configuration/configmap/
 # https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/
 ---
 apiVersion: v1
