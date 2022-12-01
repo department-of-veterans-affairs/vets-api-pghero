@@ -8,7 +8,7 @@ metadata:
   name: pghero-cm
   namespace: {{ .Release.Namespace }}
   annotations:
-    app.kubernetes.io/managed-by: Helm
+    #app.kubernetes.io/managed-by: Helm
     argocd.argoproj.io/sync-options: Replace=true
     meta.helm.sh/release-name: {{ .Release.Namespace }}
 data:

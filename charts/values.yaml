@@ -21,13 +21,13 @@ web:
     entryPoint: web
     route:
       kind: Rule
-      match: Host(`pghero-helm102-dev.vfs.va.gov`) && PathPrefix(`/`)
+      match: Host(`dnsName`) && PathPrefix(`/`)
       priority: 10
       service:
         name: svc9090
         port: 9090
       middleware:
-        name: pghero-basic-auth
+        name: traefik-basic-auth
   envVars:
     - name: PG_DEV_DB_PASSWORD
       valueFrom:
