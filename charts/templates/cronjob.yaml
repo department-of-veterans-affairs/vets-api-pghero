@@ -1,14 +1,18 @@
+# https://vfs.atlassian.net/wiki/spaces/OT/pages/2350645620/Build+a+Helm+chart+for+EKS
+# https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
+# https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: pghero-capture-space-stats
+  name: capture-space-stats
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+    app.kubernetes.io/name: {{ .Release.Namespace }}
   annotations:
     app.kubernetes.io/managed-by: Helm
-    meta.helm.sh/release-name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+    argocd.argoproj.io/sync-options: Replace=true
+    meta.helm.sh/release-name: {{ .Release.Namespace }}
 spec:
   schedule: "0 8 * * *"
   successfulJobsHistoryLimit: 1
@@ -34,18 +38,18 @@ spec:
             - -c
             - bin/rake pghero:capture_space_stats
           restartPolicy: OnFailure
-
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: pghero-capture-query-stats
+  name: capture-query-stats
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+    app.kubernetes.io/name: {{ .Release.Namespace }}
   annotations:
     app.kubernetes.io/managed-by: Helm
-    meta.helm.sh/release-name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+    argocd.argoproj.io/sync-options: Replace=true
+    meta.helm.sh/release-name: {{ .Release.Namespace }}
 spec:
   schedule: "0 8 * * *"
   successfulJobsHistoryLimit: 1
@@ -55,7 +59,7 @@ spec:
       template:
         spec:
           containers:
-          - name: pghero-capture-query-stats
+          - name: capture-query-stats
             image: "{{ .Values.image.value }}:{{ .Values.image.tag }}"
             imagePullPolicy: Always
             env:
@@ -72,18 +76,18 @@ spec:
             - -c
             - bin/rake pghero:capture_query_stats
           restartPolicy: OnFailure
-
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: pghero-clean-query-stats
+  name: clean-query-stats
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+    app.kubernetes.io/name: {{ .Release.Namespace }}
   annotations:
     app.kubernetes.io/managed-by: Helm
-    meta.helm.sh/release-name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+    argocd.argoproj.io/sync-options: Replace=true
+    meta.helm.sh/release-name: {{ .Release.Namespace }}
 spec:
   schedule: "0 0 1,15 * *"
   successfulJobsHistoryLimit: 1
@@ -93,7 +97,7 @@ spec:
       template:
         spec:
           containers:
-          - name: pghero-clean-query-stats
+          - name: clean-query-stats
             image: "{{ .Values.image.value }}:{{ .Values.image.tag }}"
             imagePullPolicy: Always
             env:

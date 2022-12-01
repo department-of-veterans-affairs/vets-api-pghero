@@ -1,15 +1,19 @@
+# https://vfs.atlassian.net/wiki/spaces/OT/pages/2350645620/Build+a+Helm+chart+for+EKS
+# https://github.com/traefik/traefik/blob/master/docs/content/routing/providers/kubernetes-crd.md#kind-ingressroute
+# https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: pghero-route
+  name: pghero-ingressroute
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+    app.kubernetes.io/name: {{ .Release.Namespace }}
   annotations:
     app.kubernetes.io/managed-by: Helm
-    meta.helm.sh/release-name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
-spec:
+    argocd.argoproj.io/sync-options: Replace=true
+    meta.helm.sh/release-name: {{ .Release.Namespace }}
+spec: 
   entryPoints:
     - {{ .Values.web.ingress.entryPoint }}
   routes:

@@ -1,3 +1,6 @@
+# https://vfs.atlassian.net/wiki/spaces/OT/pages/2350645620/Build+a+Helm+chart+for+EKS
+# https://doc.traefik.io/traefik/middlewares/http/basicauth/
+# https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
@@ -5,10 +8,11 @@ metadata:
   name: pghero-basic-auth
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+    app.kubernetes.io/name: {{ .Release.Namespace }}
   annotations:
     app.kubernetes.io/managed-by: Helm
-    meta.helm.sh/release-name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+    argocd.argoproj.io/sync-options: Replace=true
+    meta.helm.sh/release-name: {{ .Release.Namespace }}
 spec:
   basicAuth:
     secret: pghero-basic-auth-secrets

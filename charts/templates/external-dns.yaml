@@ -1,12 +1,18 @@
+# https://vfs.atlassian.net/wiki/spaces/OT/pages/2350645620/Build+a+Helm+chart+for+EKS
+# https://github.com/kubernetes-sigs/external-dns/blob/master/docs/contributing/crd-source/dnsendpoint-example.yaml
+# https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+  name: {{ .Values.web.externalDns.dnsName }}
   namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Namespace }}
   annotations:
     app.kubernetes.io/managed-by: Helm
-    meta.helm.sh/release-name: "{{ .Values.app.name }}-{{ .Values.app.env }}"
+    argocd.argoproj.io/sync-options: Replace=true
+    meta.helm.sh/release-name: {{ .Release.Namespace }}
 spec:
   endpoints:
   - dnsName: {{ .Values.web.externalDns.dnsName }}
