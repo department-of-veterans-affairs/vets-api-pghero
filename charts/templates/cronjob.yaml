@@ -1,20 +1,23 @@
 # https://vfs.atlassian.net/wiki/spaces/OT/pages/2350645620/Build+a+Helm+chart+for+EKS
 # https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
 # https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/
+# https://helm.sh/docs/chart_template_guide/variables/
 ---
+
+{{- range $key, $value := .Values.cronjobs.stats }}
+
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: capture-space-stats
-  namespace: {{ .Release.Namespace }}
+  name: {{ $value.name }}
   labels:
-    app.kubernetes.io/name: {{ .Release.Namespace }}
+    app.kubernetes.io/name: pghero-helm102
   annotations:
     #app.kubernetes.io/managed-by: Helm
     argocd.argoproj.io/sync-options: Replace=true
-    meta.helm.sh/release-name: {{ .Release.Namespace }}
+    meta.helm.sh/release-name: pghero-helm102
 spec:
-  schedule: "0 8 * * *"
+  schedule: {{ $value.schedule }}
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   jobTemplate:
@@ -23,7 +26,7 @@ spec:
         spec:
           containers:
           - name: pghero-capture-space-stats
-            image: "{{ .Values.image.value }}:{{ .Values.image.tag }}"
+            image: 008577686731.dkr.ecr.us-gov-west-1.amazonaws.com/dsva/pghero:pghero-v3.0.0
             imagePullPolicy: Always
             env:
               - name: PG_DEV_DB_PASSWORD
@@ -36,80 +39,9 @@ spec:
             command:
             - /bin/sh
             - -c
-            - bin/rake pghero:capture_space_stats
+            - {{ $value.rake_task }}
           restartPolicy: OnFailure
----
-apiVersion: batch/v1beta1
-kind: CronJob
-metadata:
-  name: capture-query-stats
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app.kubernetes.io/name: {{ .Release.Namespace }}
-  annotations:
-    #app.kubernetes.io/managed-by: Helm
-    argocd.argoproj.io/sync-options: Replace=true
-    meta.helm.sh/release-name: {{ .Release.Namespace }}
-spec:
-  schedule: "0 8 * * *"
-  successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 1
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          containers:
-          - name: capture-query-stats
-            image: "{{ .Values.image.value }}:{{ .Values.image.tag }}"
-            imagePullPolicy: Always
-            env:
-              - name: PG_DEV_DB_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: pghero-secrets
-                    key: pg-dev-dbpassword
-              - name: DATABASE_URL
-                value: "postgres://vets_api:$(PG_DEV_DB_PASSWORD)@dsva-vets-api-dev.cdqbofmbcmtd.us-gov-west-1.rds.amazonaws.com:5432/dsva_vets_api_dev?pool=16"
-              - name: PGHERO_STATS_DATABASE_URL
-            command:
-            - /bin/sh
-            - -c
-            - bin/rake pghero:capture_query_stats
-          restartPolicy: OnFailure
----
-apiVersion: batch/v1beta1
-kind: CronJob
-metadata:
-  name: clean-query-stats
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app.kubernetes.io/name: {{ .Release.Namespace }}
-  annotations:
-    #app.kubernetes.io/managed-by: Helm
-    argocd.argoproj.io/sync-options: Replace=true
-    meta.helm.sh/release-name: {{ .Release.Namespace }}
-spec:
-  schedule: "0 0 1,15 * *"
-  successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 1
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          containers:
-          - name: clean-query-stats
-            image: "{{ .Values.image.value }}:{{ .Values.image.tag }}"
-            imagePullPolicy: Always
-            env:
-              - name: PG_DEV_DB_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: pghero-secrets
-                    key: pg-dev-dbpassword
-              - name: DATABASE_URL
-                value: "postgres://vets_api:$(PG_DEV_DB_PASSWORD)@dsva-vets-api-dev.cdqbofmbcmtd.us-gov-west-1.rds.amazonaws.com:5432/dsva_vets_api_dev?pool=16"
-            command:
-            - /bin/sh
-            - -c
-            - bin/rake pghero:clean_query_stats
-          restartPolicy: OnFailure
+
+{{- end }}
+
+

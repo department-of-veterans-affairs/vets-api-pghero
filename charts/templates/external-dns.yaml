@@ -5,14 +5,14 @@
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
+  namespace: pghero-helm102
   name: {{ .Values.web.externalDns.dnsName }}
-  namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: {{ .Release.Namespace }}
+    app.kubernetes.io/name: pghero-helm102
   annotations:
     #app.kubernetes.io/managed-by: Helm
     argocd.argoproj.io/sync-options: Replace=true
-    meta.helm.sh/release-name: {{ .Release.Namespace }}
+    meta.helm.sh/release-name: pghero-helm102
 spec:
   endpoints:
   - dnsName: {{ .Values.web.externalDns.dnsName }}

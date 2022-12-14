@@ -2,6 +2,8 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+namespace: "pghero-helm102"
+
 app:
   name: "pghero-helm102"
   env: "dev"
@@ -36,4 +38,16 @@ web:
           key: pg-dev-dbpassword
     - name: PGHERO_STATS_DATABASE_URL
       value: "postgres://vets_api:$(PG_DEV_DB_PASSWORD)@dsva-vets-api-dev.cdqbofmbcmtd.us-gov-west-1.rds.amazonaws.com:5432/dsva_vets_api_dev?pool=16"
-       
+
+cronjobs:
+  db_url: "postgres://vets_api:$(PG_DEV_DB_PASSWORD)@dsva-vets-api-dev.cdqbofmbcmtd.us-gov-west-1.rds.amazonaws.com:5432/dsva_vets_api_dev?pool=16"
+  stats:
+  - name: capture-space-stats
+    schedule: "0 8 * * *"
+    rake_task: "bin/rake pghero:capture_space_stats"
+  - name: capture-query-stats
+    schedule: "0 8 * * *"
+    rake_task: "bin/rake pghero:capture_query_stats"
+  - name: clean-query-stats       
+    schedule: "0 0 1,15 * *"
+    rake_task: "bin/rake pghero:clean_query_stats"

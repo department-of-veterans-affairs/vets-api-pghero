@@ -248,6 +248,8 @@ The dashboard behaves as a service called api@internal, so it is possible to lev
 Traefik's routing capabilities to build the most suited configuration.
 For a more in-depth explanation please refer to the [Traefik documentation](https://docs.traefik.io/v2.6/operations/dashboard/#secure-mode).
 
+_**Prereq: [install Kubernetes Lens Desktop](https://docs.k8slens.dev/getting-started/install-lens/)**_
+
 Lens.app > cluster arn:aws-us-gov:eks:us-xxxxxx-1:0123456789:cluster/dsva-vagov-dev-cluster > Workloads > Pods > Any Pod > Ports > traefik:9000 Forward > 8080
 
 ![traefik-dashboard-port-forward](traefik-dashboard-port-forward.png)
