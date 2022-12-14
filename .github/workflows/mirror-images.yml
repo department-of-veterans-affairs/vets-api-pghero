@@ -19,7 +19,7 @@ jobs:
       - name: Capture argo image versions
         id: componentVersions
         run: |
-          echo "::set-output name=config::$(jq -c .components versions.json)"
+          echo "config=$(jq -c .components versions.json)" >> $GITHUB_OUTPUT
       - name: Upload versions file
         uses: actions/upload-artifact@v2
         with:
