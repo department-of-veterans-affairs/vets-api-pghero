@@ -32,7 +32,7 @@ jobs:
       - name: Set output
         id: set-environments
         run: |
-          echo "::set-output name=environments::${{ env.environments }}"
+          echo "environments=${{ env.environments }}" >> $GITHUB_OUTPUT
   release:
     needs: [prepare-values]
     if: github.ref == 'refs/heads/master'
