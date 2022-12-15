@@ -47,5 +47,5 @@ cronjobs:
     schedule: "0 8 * * *"
     rake_task: "bin/rake pghero:capture_query_stats"
   - name: clean-query-stats       
-    schedule: "0 0 1,16 * *"
+    schedule: "0 0 1,15 * *"
     rake_task: "bin/rake pghero:clean_query_stats"
