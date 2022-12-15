@@ -10,8 +10,8 @@ metadata:
     argocd.argoproj.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: Helm
   annotations:
-    meta.helm.sh/release-name: {{ .Release.Name}}
-    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
+    meta.helm.sh/release-name: pghero-helm102-dev # .Release.Name
+    meta.helm.sh/release-namespace: pghero-helm102 # .Release.Namespace
 spec: 
   entryPoints:
     - {{ .Values.web.ingress.entryPoint }}

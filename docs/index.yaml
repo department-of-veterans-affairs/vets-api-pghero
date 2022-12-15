@@ -3,12 +3,12 @@ entries:
   pghero-helm102:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-12-14T16:47:07.365609-08:00"
+    created: "2022-12-14T19:28:55.537625-08:00"
     description: A Helm chart for Kubernetes
-    digest: 0666c8a85888306cd79400cfcf7ea2d7f7de39781b23216a0dc9d16368c307e6
+    digest: 992b50f85eca3b1a3ff30bd891dccd4b9bcff347a1e71dccbfb2006878e5ec7d
     name: pghero-helm102
     type: application
     urls:
-    - pghero-helm102-0.1.0.tgz
-    version: 0.1.0
-generated: "2022-12-14T16:47:07.363287-08:00"
+    - pghero-helm102-0.1.1.tgz
+    version: 0.1.1
+generated: "2022-12-14T19:28:55.536873-08:00"

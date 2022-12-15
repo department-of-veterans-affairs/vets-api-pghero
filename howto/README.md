@@ -224,6 +224,8 @@ One possibility is a manual `helm install` run:
 
 ```
 helm list -A
+helm uninstall pghero-helm102-dev -n pghero-helm102
+helm list -A
 helm repo remove vets-api-pghero 
 helm repo add vets-api-pghero https://department-of-veterans-affairs.github.io/vets-api-pghero/
 helm repo update

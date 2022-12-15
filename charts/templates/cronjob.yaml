@@ -4,6 +4,7 @@
 # https://helm.sh/docs/chart_template_guide/variables/
 
 {{- range .Values.cronjobs }}
+---
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -13,8 +14,8 @@ metadata:
     argocd.argoproj.io/instance: {{ $.Release.Name }}
     app.kubernetes.io/managed-by: Helm
   annotations:
-    meta.helm.sh/release-name: {{ $.Release.Name}}
-    meta.helm.sh/release-namespace: {{ $.Release.Namespace }}
+    meta.helm.sh/release-name: pghero-helm102-dev # .Release.Name
+    meta.helm.sh/release-namespace: pghero-helm102 # .Release.Namespace
 spec:
   schedule: {{ .schedule }}
   successfulJobsHistoryLimit: 1
@@ -34,12 +35,13 @@ spec:
                     name: pghero-secrets
                     key: pg-dev-dbpassword
               - name: DATABASE_URL
-                value: "postgres://vets_api:$(PG_DEV_DB_PASSWORD)@dsva-vets-api-dev.cdqbofmbcmtd.us-gov-west-1.rds.amazonaws.com:5432/dsva_vets_api_dev?pool=16"
+                value: >-
+                  "postgres://vets_api:$(PG_DEV_DB_PASSWORD)@dsva-vets-api-dev.cdqbofmbcmtd.us-gov-west-1.rds.amazonaws.com:5432/dsva_vets_api_dev?pool=16"
             command:
               - /bin/sh
               - -c
               - {{ .rake_task }}
           restartPolicy: OnFailure
----
+...
 {{- end }}
 
