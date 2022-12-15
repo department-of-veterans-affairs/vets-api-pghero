@@ -5,12 +5,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: pghero-helm102
   name: pghero-cm
+  labels:
+    argocd.argoproj.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: Helm
   annotations:
-    #app.kubernetes.io/managed-by: Helm
-    argocd.argoproj.io/sync-options: Replace=true
-    meta.helm.sh/release-name: pghero-helm102
+    meta.helm.sh/release-name: {{ .Release.Name}}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
 data:
   pghero.yml: |
     databases:

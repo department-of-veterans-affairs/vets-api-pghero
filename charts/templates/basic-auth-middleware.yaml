@@ -5,14 +5,13 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  namespace: pghero-helm102
   name: traefik-basic-auth
   labels:
-    app.kubernetes.io/name: pghero-helm102
+    argocd.argoproj.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: Helm
   annotations:
-    #app.kubernetes.io/managed-by: Helm
-    argocd.argoproj.io/sync-options: Replace=true
-    meta.helm.sh/release-name: pghero-helm102
+    meta.helm.sh/release-name: {{ .Release.Name}}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
 spec:
   basicAuth:
     secret: basic-auth-secrets

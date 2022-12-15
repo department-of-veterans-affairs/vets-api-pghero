@@ -2,22 +2,21 @@
 # https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
 # https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options/
 # https://helm.sh/docs/chart_template_guide/variables/
----
 
-{{- range $key, $value := .Values.cronjobs.stats }}
-
+{{- range .Values.cronjobs }}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ $value.name }}
+  name: {{ .name }}
   labels:
-    app.kubernetes.io/name: pghero-helm102
+    # I cannot reference .Release.Name, but I can do $.Release.Name
+    argocd.argoproj.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/managed-by: Helm
   annotations:
-    #app.kubernetes.io/managed-by: Helm
-    argocd.argoproj.io/sync-options: Replace=true
-    meta.helm.sh/release-name: pghero-helm102
+    meta.helm.sh/release-name: {{ $.Release.Name}}
+    meta.helm.sh/release-namespace: {{ $.Release.Namespace }}
 spec:
-  schedule: {{ $value.schedule }}
+  schedule: {{ .schedule }}
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   jobTemplate:
@@ -26,7 +25,7 @@ spec:
         spec:
           containers:
           - name: pghero-capture-space-stats
-            image: 008577686731.dkr.ecr.us-gov-west-1.amazonaws.com/dsva/pghero:pghero-v3.0.0
+            image: "{{ $.Values.image.value }}:{{ $.Values.image.tag }}"
             imagePullPolicy: Always
             env:
               - name: PG_DEV_DB_PASSWORD
@@ -37,11 +36,10 @@ spec:
               - name: DATABASE_URL
                 value: "postgres://vets_api:$(PG_DEV_DB_PASSWORD)@dsva-vets-api-dev.cdqbofmbcmtd.us-gov-west-1.rds.amazonaws.com:5432/dsva_vets_api_dev?pool=16"
             command:
-            - /bin/sh
-            - -c
-            - {{ $value.rake_task }}
+              - /bin/sh
+              - -c
+              - {{ .rake_task }}
           restartPolicy: OnFailure
-
+---
 {{- end }}
-
 
