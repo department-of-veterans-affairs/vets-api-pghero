@@ -2,7 +2,7 @@
   "components": [
     {
       "name": "pghero",
-      "version": "v3.0.0",
+      "version": "v3.0.1",
       "repo": "ankane/pghero"
     }
   ]
